@@ -37,6 +37,7 @@ buildscript {
     }
     dependencies {
         classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.1'
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:latest.release"
     }
 }
 
@@ -45,12 +46,13 @@ plugins {
 }
 
 group = 'io.kamax'
-version = gitVersion()
+version = '0.0.20-dirty'
 
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 apply plugin: 'org.junit.platform.gradle.plugin'
+apply plugin: "com.jfrog.artifactory"
 
 configurations {
     deployerJars
@@ -58,6 +60,13 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven {
+        url "http://jfrog.prenigma.com/artifactory/matrix-libs"
+        credentials {
+            username = "admin"
+            password = "password"
+        }
+    }
 }
 
 sourceSets {
@@ -96,10 +105,9 @@ dependencies {
 }
 
 uploadArchives {
-    gradle.ext.mavenUrl = System.env.MAVEN_URL + (project.version ==~ /\d+\.\d+\.\d+/ ? '/releases' : '/snapshots')
-    gradle.ext.mavenUser = System.env.MAVEN_USER
-    gradle.ext.mavenPassword = System.env.MAVEN_PASS
-    gradle.ext.mavenPrivateKey = System.env.MAVEN_PK
+    gradle.ext.mavenUrl = "http://jfrog.prenigma.com/artifactory/matrix-libs"
+    gradle.ext.mavenUser = System.env._MAVEN_USER
+    gradle.ext.mavenPassword = System.env._MAVEN_PASS
 
     doLast {
         println "Published ${project.version} to maven repository ${gradle.mavenUrl} with user ${gradle.mavenUser}"
@@ -111,8 +119,8 @@ uploadArchives {
         repository(url: gradle.mavenUrl) {
             authentication(
                     userName: gradle.mavenUser,
-                    password: gradle.mavenPassword,
-                    privateKey: gradle.mavenPrivateKey
+                    password: gradle.mavenPassword
+//                    privateKey: gradle.mavenPrivateKey
             )
         }
     }
@@ -130,14 +138,14 @@ spotless {
     format 'misc', {
         target '**/*.gradle', '**/.gitignore'
 
-        trimTrailingWhitespace()
-        indentWithSpaces()
-        endWithNewline()
+//        trimTrailingWhitespace()
+//        indentWithSpaces()
+//        endWithNewline()
     }
     java {
-        eclipse().configFile 'spotless.eclipseformat.xml'
-        removeUnusedImports()
-        importOrderFile 'spotless.importorder'
+//        eclipse().configFile 'spotless.eclipseformat.xml'
+//        removeUnusedImports()
+//        importOrderFile 'spotless.importorder'
     }
 }
 

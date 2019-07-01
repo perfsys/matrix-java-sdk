@@ -25,8 +25,10 @@ import com.google.gson.JsonObject;
 import io.kamax.matrix._MatrixContent;
 import io.kamax.matrix._MatrixID;
 import io.kamax.matrix._MatrixUser;
+import io.kamax.matrix.hs._MatrixGroup;
 import io.kamax.matrix.hs._MatrixRoom;
 import io.kamax.matrix.room.RoomAlias;
+import io.kamax.matrix.group._GroupCreationOptions;
 import io.kamax.matrix.room._RoomAliasLookup;
 import io.kamax.matrix.room._RoomCreationOptions;
 
@@ -47,9 +49,15 @@ public interface _MatrixClient extends _MatrixClientRaw {
 
     _MatrixRoom getRoom(String roomId);
 
+    _MatrixGroup getGroup(String groupId);
+
     List<_MatrixRoom> getJoinedRooms();
 
     _MatrixRoom joinRoom(String roomIdOrAlias);
+
+    _MatrixGroup createGroup(_GroupCreationOptions options);
+
+    _MatrixGroup joinGroup(String groupIdOrAlias);
 
     _MatrixUser getUser(_MatrixID mxId);
 

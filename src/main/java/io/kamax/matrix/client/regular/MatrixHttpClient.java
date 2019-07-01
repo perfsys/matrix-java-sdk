@@ -28,12 +28,11 @@ import io.kamax.matrix._MatrixContent;
 import io.kamax.matrix._MatrixID;
 import io.kamax.matrix._MatrixUser;
 import io.kamax.matrix.client.*;
+import io.kamax.matrix.group._GroupCreationOptions;
+import io.kamax.matrix.hs._MatrixGroup;
 import io.kamax.matrix.hs._MatrixRoom;
 import io.kamax.matrix.json.*;
-import io.kamax.matrix.room.RoomAlias;
-import io.kamax.matrix.room.RoomAliasLookup;
-import io.kamax.matrix.room._RoomAliasLookup;
-import io.kamax.matrix.room._RoomCreationOptions;
+import io.kamax.matrix.room.*;
 
 import org.apache.commons.codec.digest.HmacAlgorithms;
 import org.apache.commons.codec.digest.HmacUtils;
@@ -46,6 +45,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
+
 import java8.util.Optional;
 import java8.util.stream.Collectors;
 import java8.util.stream.StreamSupport;
@@ -123,6 +123,12 @@ public class MatrixHttpClient extends AMatrixHttpClient implements _MatrixClient
     }
 
     @Override
+    public _MatrixGroup getGroup(String groupId) {
+        return new MatrixHttpGroup(getContext(), groupId);
+    }
+
+
+    @Override
     public List<_MatrixRoom> getJoinedRooms() {
         URL path = getClientPath("joined_rooms");
         JsonObject resBody = GsonUtil.parseObj(executeAuthenticated(new Request.Builder().get().url(path)));
@@ -136,6 +142,24 @@ public class MatrixHttpClient extends AMatrixHttpClient implements _MatrixClient
         String resBody = executeAuthenticated(new Request.Builder().post(getJsonBody(new JsonObject())).url(path));
         String roomId = GsonUtil.get().fromJson(resBody, RoomCreationResponseJson.class).getRoomId();
         return getRoom(roomId);
+    }
+
+    @Override
+    public _MatrixGroup createGroup(_GroupCreationOptions options) {
+        URL path = getClientPath("create_group");
+        String resBody = executeAuthenticated(
+                new Request.Builder().post(getJsonBody(new GroupCreationRequestJson(options))).url(path));
+        String groupId = GsonUtil.get().fromJson(resBody, GroupCreationResponseJson.class).getGroupId();
+        return getGroup(groupId);
+    }
+
+    @Override
+    public _MatrixGroup joinGroup(String groupIdOrAlias) {
+
+        URL path = getClientPath("join", groupIdOrAlias);
+        String resBody = executeAuthenticated(new Request.Builder().post(getJsonBody(new JsonObject())).url(path));
+        String groupId = GsonUtil.get().fromJson(resBody, GroupCreationResponseJson.class).getGroupId();
+        return getGroup(groupId);
     }
 
     @Override
