@@ -1,1 +1,28 @@
-./gradlew uploadArchives
+#./gradlew uploadArchives
+steps:
+
+  - name: 'java:8-alpine'
+    args: ['./gradlew', 'uploadArchives']
+
+#  - name: 'gcr.io/cloud-builders/mvn'
+    #  args: ['./gradlew', '-Pprod' ,'clean' ,'bootJar', '-DskipTests']
+#    args: ['clean' ,'package']
+
+  #- name: 'java:8-alpine'
+  #  args: ['./gradlew','jibDockerBuild' ]
+
+#  - name: 'ubuntu'
+#    args: ['ls', '-la', 'target/']
+#
+#  - name: 'gcr.io/cloud-builders/docker'
+#    args: ['build', '--no-cache', '-t', 'prenigma-keycloak:latest', '.']
+#
+#  - name: 'gcr.io/cloud-builders/docker'
+#    args: ['tag', 'prenigma-keycloak:latest', 'gcr.io/prenigmaplaces/prenigma-keycloak:latest']
+#
+#  - name: 'gcr.io/cloud-builders/docker'
+#    args: ['push', 'gcr.io/prenigmaplaces/prenigma-keycloak:latest']
+#images:
+#  - 'gcr.io/prenigmaplaces/prenigma-keycloak:latest'
+#tags:
+#  - "eorlovsky-cloudbuild"
