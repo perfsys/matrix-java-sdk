@@ -1,10 +1,19 @@
 steps:
 
   - name: 'java:8-alpine'
+    args: ['echo', '$_MAVEN_USER']
+  - name: 'java:8-alpine'
+    args: ['echo', '$_MAVEN_PASS']
+  - name: 'java:8-alpine'
+    args: ['echo', '$MAVEN_USER']
+  - name: 'java:8-alpine'
+    args: ['echo', '$MAVEN_PASS']
+
+  - name: 'java:8-alpine'
     args: ['./gradlew', 'uploadArchives']
-#    env:
-#      - '_MAVEN_USER=$_MAVEN_USER'
-#      - '_MAVEN_PASS=$_MAVEN_PASS'
+    env:
+      - '_MAVEN_USER=$_MAVEN_USER'
+      - '_MAVEN_PASS=$_MAVEN_PASS'
 
 substitutions:
   _MAVEN_USER: user
