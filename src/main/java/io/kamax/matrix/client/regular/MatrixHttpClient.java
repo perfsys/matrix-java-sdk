@@ -154,6 +154,13 @@ public class MatrixHttpClient extends AMatrixHttpClient implements _MatrixClient
     }
 
     @Override
+    public List<_MatrixGroup> getJoinedGroups() {
+        URL path = getClientPath("joined_groups");
+        JsonObject resBody = GsonUtil.parseObj(executeAuthenticated(new Request.Builder().get().url(path)));
+        return StreamSupport.stream(GsonUtil.asList(resBody, "joined_groups", String.class)).map(this::getGroup)
+                .collect(Collectors.toList());
+    }
+    @Override
     public _MatrixGroup joinGroup(String groupIdOrAlias) {
 
         URL path = getClientPath("join", groupIdOrAlias);

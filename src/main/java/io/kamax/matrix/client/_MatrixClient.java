@@ -57,6 +57,8 @@ public interface _MatrixClient extends _MatrixClientRaw {
 
     _MatrixGroup createGroup(_GroupCreationOptions options);
 
+    List<_MatrixGroup> getJoinedGroups();
+
     _MatrixGroup joinGroup(String groupIdOrAlias);
 
     _MatrixUser getUser(_MatrixID mxId);
