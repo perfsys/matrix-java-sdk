@@ -28,7 +28,9 @@ import java8.util.Optional;
 import java8.util.stream.Collectors;
 import java8.util.stream.StreamSupport;
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -203,9 +205,14 @@ public class MatrixHttpGroup extends AMatrixHttpClient implements _MatrixGroup {
 
     @Override
     public void invite(_MatrixID mxId) {
-        URL path = getClientPath("groups", groupId, "invite");
+
+        URL path = this.getClientPath("groups", this.groupId, "admin", "users", "invite", mxId.getId());
+
         executeAuthenticated(
-                new Request.Builder().post(getJsonBody(GsonUtil.makeObj("user_id", mxId.getId()))).url(path));
+                new Request.Builder()
+                        .put(this.getJsonBody("{}"))
+                        .url(path)
+        );
     }
 
     @Override
