@@ -46,7 +46,7 @@ plugins {
 }
 
 group = 'io.kamax'
-version = '0.0.21-dirty'
+version = '0.0.22-dirty'
 
 apply plugin: 'java'
 apply plugin: 'maven'
