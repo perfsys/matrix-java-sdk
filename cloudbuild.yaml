@@ -7,8 +7,8 @@ steps:
       - '_MAVEN_PASS=$_MAVEN_PASS'
 
 substitutions:
-  _MAVEN_USER: user
-  _MAVEN_PASS: pass
+  _MAVEN_USER: prenigma-jfrog
+  _MAVEN_PASS: prenigma-jfrog
 
 options:
   substitution_option: 'ALLOW_LOOSE'
