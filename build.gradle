@@ -63,8 +63,8 @@ repositories {
     maven {
         url "http://jfrog.prenigma.com/artifactory/matrix-libs"
         credentials {
-            username = "admin"
-            password = "password"
+            username = "prenigma-jfrog"
+            password = "prenigma-jfrog"
         }
     }
 }
